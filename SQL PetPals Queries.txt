@@ -1,0 +1,405 @@
+SQL PetPals Queries:
+
+1. provide a sql script that initializes the database for the pets adoption platform "petpals"
+A. create database PetPals;
+
+2. Create tables for pets, Shelters, donations, adoptionevnets, and participants.
+A. Pets table:
+
+create table Pets(PetID int primary key,Name varchar(255),Age int,Breed varchar(255),Type varchar(255),AvailableForAdoption bit);
+
+insert into Pets (PetID, Name, Age, Breed, Type, AvailableForAdoption) values
+(1001, 'Buddy', 3, 'Golden Retriever', 'Dog', 1),
+(1002, 'Mittens', 2, 'Siamese', 'Cat', 1),
+(1003, 'Max', 5, 'Labrador', 'Dog', 0),
+(1004, 'Luna', 1, 'German Shepherd', 'Dog', 1),
+(1005, 'Whiskers', 4, 'Persian', 'Cat', 1),
+(1006, 'Rocky', 2, 'Boxer', 'Dog', 1),
+(1007, 'Fluffy', 3, 'Maine Coon', 'Cat', 1);
+
+select * from Pets;
+
+-----------------------------------------------------------------------------------------------------------------------
+ PetID | Name     | Age  | Breed            | Type | AvailableForAdoption                       | OwnerId | ShelterID |
++-------+----------+------+------------------+------+--------------------------------------------+---------+-----------+
+|  1001 | Buddy    |    3 | Golden Retriever | Dog  | 0x01                                       |    6001 |      2001 |
+|  1002 | Mittens  |    2 | Siamese          | Cat  | 0x00                                       |    6002 |      2002 |
+|  1003 | Max      |    5 | Labrador         | Dog  | 0x00                                       |    6001 |      2002 |
+|  1004 | Luna     |    1 | German Shepherd  | Dog  | 0x01                                       |    6003 |      2003 |
+|  1005 | Whiskers |    4 | Persian          | Cat  | 0x01                                       |    NULL |      NULL |
+|  1006 | Rocky    |    2 | Boxer            | Dog  | 0x01                                       |    NULL |      2001 |
+|  1007 | Fluffy   |    3 | Maine Coon       | Cat  | 0x01                                       |    NULL |      2003 |
+------------------------------------------------------------------------------------------------------------------------
+Shelters Table:
+
+create table Shelters(
+ShelterId int primary key,Name varchar(255) ,Location varchar(255));
+
+insert into Shelters (ShelterID, Name, Location) values
+(2001, 'Animal Rescue Shelter', '123 Main St'),
+(2002, ' Friends Rescue', '456 Park Road'),
+(2003, 'Pets Shelter', 'Bank Colony'),
+(2004, 'Paw Prints Rescue', 'Indiranagar-5');
+insert into Shelters (ShelterID, Name, Location) values
+(2005, 'super Shelter', 'Chennai');
+
+Select * from Shelters;
+
++-----------+-----------------------+---------------+
+| ShelterId | Name                  | Location      |
++-----------+-----------------------+---------------+
+|      2001 | Animal Rescue Shelter | 123 Main St   |
+|      2002 |  Friends Rescue       | 456 Park Road |
+|      2003 | Pets Shelter          | Bank Colony   |
+|      2004 | Paw Prints Rescue     | Indiranagar-5 |
+|      2005 | super Shelter         | Chennai       |
++-----------+-----------------------+---------------+
+
+Donations Table:
+
+create table Donations (
+DonationId int primary key,DonorName varchar(255),DonationType varchar(255),
+DonationAmount decimal(10,2),DonationItem varchar(255),
+DonationDate  datetime);
+
+insert into Donations (DonationID, DonorName, DonationType, DonationAmount, DonationItem, DonationDate) values
+(3001, 'David', 'Cash', 100.00, NULL, '2022-05-15 09:30:00'),
+(3002, 'John', 'Item', NULL, 'Pet food', '2022-02-20 14:45:00'),
+(3003, 'Marvel', 'Cash', 250.00, NULL, '2022-05-05 11:30:00'),
+(3004, 'Michael', 'Item', NULL, 'Toys', '2022-06-10 15:00:00');
+insert into Donations (DonationID, DonorName, DonationType, DonationAmount, DonationItem, DonationDate) values
+(3005, 'kavitha', 'Cash', 300.00, NULL, '2024-07-15 11:57:00');
+
+Select * from Donations;
+
+------------+-----------+--------------+----------------+--------------+---------------------+-----------+
+| DonationId | DonorName | DonationType | DonationAmount | DonationItem | DonationDate        | ShelterID |
++------------+-----------+--------------+----------------+--------------+---------------------+-----------+
+|       3001 | David     | Cash         |         100.00 | NULL         | 2022-05-15 09:30:00 |      2001 |
+|       3002 | John      | Item         |           NULL | Pet food     | 2022-02-20 14:45:00 |      2002 |
+|       3003 | Marvel    | Cash         |         250.00 | NULL         | 2022-05-05 11:30:00 |      2003 |
+|       3004 | Michael   | Item         |           NULL | Toys         | 2022-06-10 15:00:00 |      2003 |
+|       3005 | kavitha   | Cash         |         300.00 | NULL         | 2024-07-15 11:57:00 |      2002 |
++------------+-----------+--------------+----------------+--------------+---------------------+-----------+
+
+AdoptionEvents:
+
+create table AdoptionEvents(
+EventID int primary key,EventName varchar(255),EventDate datetime,Location varchar(255));
+
+insert into AdoptionEvents (EventID, EventName, EventDate, Location) values
+(4001, 'Adoption Day', '2022-03-10 12:00:00', 'Vijayawada'),
+(4002, 'Pet Day', '2022-04-15 10:00:00', ' Guntur'),
+(4003, 'Cute Event', '2022-07-20 10:00:00', 'Bank Colony'),
+(4004, 'Furry Friends Fest', '2022-08-15 12:00:00', 'Indiranagar');
+insert into AdoptionEvents values(4005,'crazzy Animals','2022-05-14 20:00:00','Balaji Nagar');
+insert into AdoptionEvents values(4006,'fuzzy Animals','2022-10-13 09:30:00','Chennai');
+
+select * from AdoptionEvents;
+
++---------+--------------------+---------------------+--------------+-----------+-------+
+| EventID | EventName          | EventDate           | Location     | ShelterID | PetId |
++---------+--------------------+---------------------+--------------+-----------+-------+
+|    4001 | Adoption Day       | 2022-03-10 12:00:00 | Vijayawada   |      2001 |  1001 |
+|    4002 | Pet Day            | 2022-04-15 10:00:00 |  Guntur      |      2002 |  1002 |
+|    4003 | Cute Event         | 2022-07-20 10:00:00 | Bank Colony  |      2005 |  1001 |
+|    4004 | Furry Friends Fest | 2022-08-15 12:00:00 | Indiranagar  |      2005 |  1003 |
+|    4005 | crazzy Animals     | 2022-05-14 20:00:00 | Balaji Nagar |      2005 |  1004 |
+|    4006 | fuzzy Animals      | 2022-10-13 09:30:00 | Chennai      |      2004 |  NULL |
++---------+--------------------+---------------------+--------------+-----------+-------+
+
+Participants:
+
+create table Participants(
+ParticipantID int primary key,ParticipantName varchar(255),
+ParticipantType varchar(255),EventID int,Foreign key(EventID) references AdoptionEvents(EventID));
+
+insert into Participants (ParticipantID, ParticipantName, ParticipantType, EventID) VALUES
+(5001, 'ABC ', 'Shelter', 4001),
+(5002, 'XYZ', 'Adopter', 4002),
+(5003, 'PetLovers', 'Shelter', 4003),
+(5004, 'FGH', 'Adopter', 4004);
+ 
+Select * from Participants;
+
++---------------+-----------------+-----------------+---------+
+| ParticipantID | ParticipantName | ParticipantType | EventID |
++---------------+-----------------+-----------------+---------+
+|          5001 | ABC             | Shelter         |    4001 |
+|          5002 | XYZ             | Adopter         |    4002 |
+|          5003 | PetLovers       | Shelter         |    4003 |
+|          5004 | FGH             | Adopter         |    4004 |
++---------------+-----------------+-----------------+---------+
+
+3. Define appropriate primary keys, foreign keys and constraints.
+A. Primary keys - PetID, ShelterID, DonationId, eventID, ParticipantID
+   Foreign keys - EventID, ShelterID, OwnerId,PetID
+
+4. Ensure the script handles potential errors, such as if the database or tables already exist.
+A. (a) create database PetPals;
+   ERROR 1007 (HY000): Can't create database 'PetPals'; database exists
+   (b)  create table pets(petid int);
+   ERROR 1050 (42S01): Table 'pets' already exists
+   (c) create table Participants(ParticipantiD int);
+   ERROR 1050 (42S01): Table 'Participants' already exists
+
+5. Write an sql query that retrieves a list of available pets(those marked as available for adoption) from the pets table. Include the pets name, age, breed, and type in the result set.Ensure that the query filters out pets that are not available for adoption.
+A. select Name, Age, Breed, Type from Pets where AvailableForAdoption = 1;
+
+
++----------+------+------------------+------+
+| Name     | Age  | Breed            | Type |
++----------+------+------------------+------+
+| Buddy    |    3 | Golden Retriever | Dog  |
+| Luna     |    1 | German Shepherd  | Dog  |
+| Whiskers |    4 | Persian          | Cat  |
+| Rocky    |    2 | Boxer            | Dog  |
+| Fluffy   |    3 | Maine Coon       | Cat  |
++----------+------+------------------+------+
+
+6. Write an sql query that retrieves the names of participants registered for a specific adoption event. Use a parameter to specify the eventid.ensure that the query joins the necessary tables to retrieve the participant names and types.
+A.   select p.ParticipantName as participant_name , p.ParticipantType
+     as participant_type from Participants p inner join 
+     AdoptionEvents a on p.EventID=a.EventID;
++------------------+------------------+
+| participant_name | participant_type |
++------------------+------------------+
+| ABC              | Shelter          |
+| XYZ              | Adopter          |
+| PetLovers        | Shelter          |
+| FGH              | Adopter          |
++------------------+------------------+
+
+7. Create a stored procedure in sql that allows a shelter to update its information(name and location) in the "shelters" table. Use parameters to pass the shelter Id and new information. Ensure that the procedure performs the update and handles potential errors, such as an invalid shelterid.
+A. 
+DELIMITER $$
+Create procedure updateinformation(IN S_id int,IN S_Name varchar(255),IN S_Loc varchar(255))
+begin
+ /* update at least one record and delete one record*/
+update shelters
+set name=S_Name,
+Location=S_Loc
+where ShelterID=S_Id;
+end $$
+DELIMITER ;
+
+call updateinformation(2001, 'SuperActiveAnimals','Hyderabad');
++-----------+-----------------------+---------------+
+| ShelterId | Name                  | Location      |
++-----------+-----------------------+---------------+
+|      2001 | SuperActiveAnimals    | Hyderabad     |
+|      2002 |  Friends Rescue       | 456 Park Road |
+|      2003 | Pets Shelter          | Bank Colony   |
+|      2004 | Paw Prints Rescue     | Indiranagar-5 |
+|      2005 | super Shelter         | Chennai       |
++-----------+-----------------------+---------------+
+
+
+8. Write a sql query that calculates and retrieves the total donation amount for each shelter(by shelter name) from the "donations" table. The result should include the shelter name and total donation amount.Ensure that the query handles cases where a shelter has received no donations.
+A.   select s.Name,sum(d.DonationAmount) as total_amount from Donations d 
+     inner join Shelters s  on d.ShelterID=s.ShelterID group by s.ShelterID;
+       
++-----------------------+--------------+
+| Name                  | total_amount |
++-----------------------+--------------+
+| Animal Rescue Shelter |       100.00 |
+|  Friends Rescue       |       300.00 |
+| Pets Shelter          |       250.00 |
++-----------------------+--------------+
+
+9. write a sql query that retrives the names of pets from pets table and donot have an owner. include pets name, age, breed, type in the result set.
+A.  select Name,Age,Breed,Type from Pets where OwnerId is null;
+     
++----------+------+------------+------+
+| Name     | Age  | Breed      | Type |
++----------+------+------------+------+
+| Whiskers |    4 | Persian    | Cat  |
+| Rocky    |    2 | Boxer      | Dog  |
+| Fluffy   |    3 | Maine Coon | Cat  |
++----------+------+------------+------+
+
+10.write an sql query that retrieves the total donation amount for each month and year from the donations table. The result should include the month-year and the corresponding total donation amount. ensure that the query handles cases where no donations were made in a specific month-year.
+A.  
+    select concat(monthname(DonationDate),'',year(DonationDate)) as Month_Year
+   ,coalesce(sum(DonationAmount),0) as Total_Doantion_Amount from Donations
+    group by year(DonationDate),month(DonationDate),concat(monthname(DonationDate),'',
+    year(DonationDate))
+    order by year(DonationDate),month(DonationDate);
+
++-----------------------+-----------------------+
+| Month_Year             Total_Doantion_Amount  |
++-----------------------+-----------------------+
+|  February 2022        | 0.00                   |
+|  May 2022             | 350.00                 |
+|  June 2022            | 0.00                   |
+|  July 2024            | 300.00                 |
++-----------------------+-----------------------+
+
+11. Retrieve a list of distinct breeds for all pets that are either aged between 1 and 3 years or older than 5 years.
+
+A. select distinct Breed from pets where (Age Between 1                 and 3)  or Age>5;
++------------------+
+| Breed            |
++------------------+
+| Golden Retriever |
+| Siamese          |
+| German Shepherd  |
+| Boxer            |
+| Maine Coon       |
++------------------+
+
+12. Retrieve a list of pets and their respective shelters where the pets are currently available for adoption.
+
+A.   select p.Name as PetName, s.name as ShelterName               
+     from Pets p inner join Shelters s on   
+     p.ShelteriD=s.ShelterID where p.AvailableForAdoption=1;
++---------+-----------------------+
+| PetName | ShelterName           |
++---------+-----------------------+
+| Buddy   | Animal Rescue Shelter |
+| Luna    | Pets Shelter          |
+| Rocky   | Animal Rescue Shelter |
+| Fluffy  | Pets Shelter          |
++---------+-----------------------+
+
+13. Find the total number of participants in events organized by shelters located in a specific city. Ex: city = chennai.
+
+A. select count(distinct p.ParticipantID) as    
+   Total_Participants from AdoptionEvents ae join Shelters  
+   s on ae.ShelterID=s.ShelterID join participants p on   
+   ae.EventID=p.EventID where s.location="Chennai";
+ +--------------------+
+   | Total_Participants |
+   +--------------------+
+   |                  2 |
+   +--------------------+
+
+14.Retrieve a list of unique breeds for pets with ages between 1 and 5 years.
+A. select distinct breed from pets where age between 1 and   
+   5;
++------------------+
+| breed            |
++------------------+
+| Golden Retriever |
+| Siamese          |
+| Labrador         |
+| German Shepherd  |
+| Persian          |
+| Boxer            |
+| Maine Coon       |
++------------------+
+
+ 15. Find the pets that have not been adopted by selecting their information from the 'Pet' table. 
+A.  select * from pets where AvailableForAdoption=0;
++-------+---------+------+----------+------+--------------------------------------------+---------+-----------+
+| PetID | Name    | Age  | Breed    | Type | AvailableForAdoption                       | OwnerId | ShelterID |
++-------+---------+------+----------+------+--------------------------------------------+---------+-----------+
+|  1002 | Mittens |    2 | Siamese  | Cat  | 0x00                                       |    6002 |      2002 |
+|  1003 | Max     |    5 | Labrador | Dog  | 0x00                                       |    6001 |      2002 |
++-------+---------+------+----------+------+--------------------------------------------+---------+-----------+
+
+ 16. Retrieve the names of all adopted pets along with the   
+     adopter's name from the 'Adoption' and 'User' tables.
+A.   select p.name as PetName,u.ParticipantName as 
+     AdopterName from pets p Join AdoptionEvents ae on  
+     p.PetId=ae.PetId Join 
+     Participants u on ae.EventID=u.EventID where    
+     u.ParticipantType='Adopter' and  
+     p.AvailableForAdoption=0 ;
++---------+-------------+
+| PetName | AdopterName |
++---------+-------------+
+| Mittens | XYZ         |
+| Max     | FGH         |
++---------+-------------+
+
+17. Retrieve a list of all shelters along with the count of pets currently available for adoption in each shelter. 
+
+A.  select s.Name as ShelterName ,count(p.PetId) as  
+    AvailablePetsCount from Shelters s Left Join  Pets p on  
+    s.ShelterID=p.ShelterID and AvailableForAdoption=1 
+    group by s.ShelterID;
+
+
++-----------------------+--------------------+
+| ShelterName           | AvailablePetsCount |
++-----------------------+--------------------+
+| Animal Rescue Shelter |                  2 |
+|  Friends Rescue       |                  0 |
+| Pets Shelter          |                  2 |
+| Paw Prints Rescue     |                  0 |
+| super Shelter         |                  0 |
++-----------------------+--------------------+
+
+18.Find pairs of pets from the same shelter that have the same breed. 
+A. select p1.Name as Pet1Name,p2.Name as Pet2Name,p1.Breed as Breed from Pets p1  inner join Pets p2 on p1.ShelterID=p2.ShelterID and p1.PetID < p2.PetID
+where p1.Breed=p2.Breed ;
+
+
++----------+----------+------------------+
+| Pet1Name | Pet2Name | Breed            |
++----------+----------+------------------+
+| Buddy    | Rocky    | Golden Retriever |
++----------+----------+------------------+
+
+
+19. List all possible combinations of shelters and adoption events. 
+A.
+select s.Name as ShelterName,ae.EventName as AdoptionEventName from AdoptionEvents ae cross join Shelters s order by AdoptionEventName,ShelterName;
+
++-----------------------+--------------------+
+| ShelterName           | AdoptionEventName  |
++-----------------------+--------------------+
+|  Friends Rescue       | Adoption Day       |
+|  Friends Rescue       | crazzy Animals     |
+|  Friends Rescue       | Cute Event         |
+|  Friends Rescue       | Furry Friends Fest |
+|  Friends Rescue       | fuzzy Animals      |
+|  Friends Rescue       | Pet Day            |
+| Animal Rescue Shelter | Adoption Day       |
+| Animal Rescue Shelter | crazzy Animals     |
+| Animal Rescue Shelter | Cute Event         |
+| Animal Rescue Shelter | Furry Friends Fest |
+| Animal Rescue Shelter | fuzzy Animals      |
+| Animal Rescue Shelter | Pet Day            |
+| Paw Prints Rescue     | Adoption Day       |
+| Paw Prints Rescue     | crazzy Animals     |
+| Paw Prints Rescue     | Cute Event         |
+| Paw Prints Rescue     | Furry Friends Fest |
+| Paw Prints Rescue     | fuzzy Animals      |
+| Paw Prints Rescue     | Pet Day            |
+| Pets Shelter          | Adoption Day       |
+| Pets Shelter          | crazzy Animals     |
+| Pets Shelter          | Cute Event         |
+| Pets Shelter          | Furry Friends Fest |
+| Pets Shelter          | fuzzy Animals      |
+| Pets Shelter          | Pet Day            |
+| super Shelter         | Adoption Day       |
+| super Shelter         | crazzy Animals     |
+| super Shelter         | Cute Event         |
+| super Shelter         | Furry Friends Fest |
+| super Shelter         | fuzzy Animals      |
+| super Shelter         | Pet Day            |
++-----------------------+--------------------+
+
+20.Determine the shelter that has the highest number of adopted pets.
+A.  select s.name as ShelterName,count(p.petId) as   
+    AdoptedPetsCount from Shelters s Join Pets p on   
+    s.ShelterID=p.ShelterID where AvailableForAdoption=0 
+    group by s.ShelterID Order by AdoptedPetsCount Limit 1;
++-----------------+------------------+
+| ShelterName     | AdoptedPetsCount |
++-----------------+------------------+
+|  Friends Rescue |                2 |
++-----------------+------------------+
+
+
+
+
+
+
+
+
+
+
+
